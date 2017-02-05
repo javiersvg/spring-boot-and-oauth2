@@ -1,5 +1,7 @@
 package com.example;
 
+import com.example.customer.Customer;
+import com.example.customer.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,6 +12,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
@@ -35,8 +38,17 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
     @Autowired
     OAuth2ClientContext oauth2ClientContext;
 
+    @Autowired
+    CustomerRepository customerRepository;
+
     @RequestMapping("/user")
     public Principal user(Principal principal) {
+        Customer customer = customerRepository.getByName(principal.getName());
+        if (customer==null) {
+            customer = new Customer();
+            customer.setName(principal.getName());
+            customerRepository.save(customer);
+        }
         return principal;
     }
 
