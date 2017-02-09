@@ -1,5 +1,9 @@
-### Spring Boot and OAuth2
+### Authorization server
 
-Spring boot OAuth2 application based on this [tutorial](https://spring.io/guides/tutorials/spring-boot-oauth2/)
+##Description
+This is the authorization server which contains:
+- Facebook login
+- Github login
+- Resource Server
 
 To run simply execute `./mvnw spring-boot:run`
